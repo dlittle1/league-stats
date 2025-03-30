@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoL Item Recommender</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Include Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Debugging script -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM fully loaded');
+      // Log all IDs in the document to help with debugging
+      const elements = document.querySelectorAll('[id]');
+      console.log('Elements with IDs:', elements.length);
+      elements.forEach(el => console.log(`Element with ID: ${el.id}`));
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>League of Legends Item Recommender</h1>
+      <p>Find the best items for your champion based on their abilities and passive</p>
+      <div id="connection-status"></div>
+    </header>
+    
+    <main>
+      <section class="search-section">
+        <div id="setup-instructions" class="hidden">
+          <h3>First Time Setup</h3>
+          <p>If this is your first time running the application, you might need to initialize the sample data:</p>
+          <ol>
+            <li>Stop the server (Ctrl+C in your terminal)</li>
+            <li>Run <code>node initSampleData.js</code> to initialize sample data</li>
+            <li>Restart the server with <code>node src/index.js</code></li>
+            <li>Refresh this page</li>
+          </ol>
+          <button id="continue-anyway">Continue Anyway</button>
+        </div>
+        
+        <div class="search-container">
+          <input type="text" id="champion-search" placeholder="Search for a champion...">
+          <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="team-comp-selector">
+          <label for="enemy-team-comp">Enemy Team Composition:</label>
+          <select id="enemy-team-comp">
+            <option value="balanced">Balanced Team (Default)</option>
+            <option value="squishy">Squishy Team (0-1 tanks)</option>
+            <option value="tanky">Tanky Team (2+ tanks/bruisers)</option>
+            <option value="cc-heavy">CC-Heavy Team</option>
+          </select>
+        </div>
+        
+        <div id="champions-dropdown" class="dropdown-content hidden"></div>
+      </section>
+      
+      <section class="champion-info hidden" id="champion-info">
+        <div class="champion-header">
+          <div class="champion-image-container">
+            <img id="champion-image" src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/default.png" alt="Champion">
+          </div>
+          <div class="champion-details">
+            <h2 id="champion-name">Champion Name</h2>
+            <p id="champion-title">Champion Title</p>
+            <div class="champion-tags" id="champion-tags">
+              <!-- Tags will be added dynamically -->
+            </div>
+            <div class="team-comp-indicator">
+              <span class="team-comp-label">Enemy Team:</span>
+              <span id="current-team-comp">Balanced</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="champion-abilities">
+          <h3>Abilities</h3>
+          <div class="abilities-container">
+            <!-- Passive ability -->
+            <div class="ability">
+              <div class="ability-icon-container">
+                <img id="passive-icon" src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/default.png" alt="Passive">
+              </div>
+              <div class="ability-details">
+                <h4>Passive: <span id="passive-name">Unknown</span></h4>
+                <p id="passive-description">No description available</p>
+              </div>
+            </div>
+            
+            <!-- Q ability -->
+            <div class="ability">
+              <div class="ability-icon-container">
+                <img id="q-icon" src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/default.png" alt="Q">
+              </div>
+              <div class="ability-details">
+                <h4>Q: <span id="q-name">Unknown</span></h4>
+                <p id="q-description">No description available</p>
+              </div>
+            </div>
+            
+            <!-- W ability -->
+            <div class="ability">
+              <div class="ability-icon-container">
+                <img id="w-icon" src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/default.png" alt="W">
+              </div>
+              <div class="ability-details">
+                <h4>W: <span id="w-name">Unknown</span></h4>
+                <p id="w-description">No description available</p>
+              </div>
+            </div>
+            
+            <!-- E ability -->
+            <div class="ability">
+              <div class="ability-icon-container">
+                <img id="e-icon" src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/default.png" alt="E">
+              </div>
+              <div class="ability-details">
+                <h4>E: <span id="e-name">Unknown</span></h4>
+                <p id="e-description">No description available</p>
+              </div>
+            </div>
+            
+            <!-- R ability (ultimate) -->
+            <div class="ability">
+              <div class="ability-icon-container">
+                <img id="r-icon" src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/default.png" alt="R">
+              </div>
+              <div class="ability-details">
+                <h4>R: <span id="r-name">Unknown</span></h4>
+                <p id="r-description">No description available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="stats-analysis">
+          <h3>Stats Priority Analysis</h3>
+          <div class="stats-chart-container">
+            <canvas id="stats-chart" width="400" height="300"></canvas>
+          </div>
+        </div>
+        
+        <div class="recommendations">
+          <h3>Recommended Items</h3>
+          
+          <div class="team-strategy">
+            <h4>Team Composition Strategy</h4>
+            <p id="team-strategy-text">Items are optimized for a balanced enemy team composition.</p>
+          </div>
+          
+          <div class="item-category">
+            <h4>Core Items</h4>
+            <div class="core-items-container" id="core-items"></div>
+          </div>
+          
+          <div class="item-category">
+            <h4>Boots</h4>
+            <div class="boots-items-container" id="boots-items"></div>
+          </div>
+        </div>
+      </section>
+      
+      <div class="loading hidden" id="loading">
+        <div class="spinner"></div>
+        <p>Analyzing champion abilities...</p>
+      </div>
+    </main>
+    
+    <footer>
+      <p>This app is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends.</p>
+    </footer>
+  </div>
+  
+  <!-- Include Chart.js for the stats visualization -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

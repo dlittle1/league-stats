@@ -1,0 +1,104 @@
+{
+  "Lux": {
+    "id": "Lux",
+    "key": "99",
+    "name": "Lux",
+    "title": "the Lady of Luminosity",
+    "image": {
+      "full": "Lux.png"
+    },
+    "tags": [
+      "Mage",
+      "Support"
+    ],
+    "spells": [
+      {
+        "name": "Light Binding",
+        "description": "Lux releases a sphere of light that binds and deals damage.",
+        "image": {
+          "full": "LuxLightBinding.png"
+        }
+      },
+      {
+        "name": "Prismatic Barrier",
+        "description": "Lux throws her wand and bends light around allies, shielding them.",
+        "image": {
+          "full": "LuxPrismaticWave.png"
+        }
+      },
+      {
+        "name": "Lucent Singularity",
+        "description": "Lux sends an irregular light sphere that slows and damages enemies.",
+        "image": {
+          "full": "LuxLucentSingularity.png"
+        }
+      },
+      {
+        "name": "Final Spark",
+        "description": "Lux fires a giant laser that damages all enemies in the area.",
+        "image": {
+          "full": "LuxMaliceCannon.png"
+        }
+      }
+    ],
+    "passive": {
+      "name": "Illumination",
+      "description": "Lux's spells mark enemies with light energy that her attacks detonate for bonus damage.",
+      "image": {
+        "full": "Lux_Passive.png"
+      }
+    },
+    "version": "14.6.1"
+  },
+  "Yasuo": {
+    "id": "Yasuo",
+    "key": "157",
+    "name": "Yasuo",
+    "title": "the Unforgiven",
+    "image": {
+      "full": "Yasuo.png"
+    },
+    "tags": [
+      "Fighter",
+      "Assassin"
+    ],
+    "spells": [
+      {
+        "name": "Steel Tempest",
+        "description": "Yasuo thrusts his sword forward, damaging all enemies in a line.",
+        "image": {
+          "full": "YasuoQ.png"
+        }
+      },
+      {
+        "name": "Wind Wall",
+        "description": "Yasuo creates a moving wall that blocks all enemy projectiles.",
+        "image": {
+          "full": "YasuoW.png"
+        }
+      },
+      {
+        "name": "Sweeping Blade",
+        "description": "Yasuo dashes through an enemy, dealing damage and marking them.",
+        "image": {
+          "full": "YasuoE.png"
+        }
+      },
+      {
+        "name": "Last Breath",
+        "description": "Yasuo blinks to an airborne enemy champion, dealing physical damage.",
+        "image": {
+          "full": "YasuoR.png"
+        }
+      }
+    ],
+    "passive": {
+      "name": "Way of the Wanderer",
+      "description": "Yasuo's Critical Strike Chance is doubled. Additionally, Yasuo builds up a shield when moving.",
+      "image": {
+        "full": "Yasuo_Passive.png"
+      }
+    },
+    "version": "14.6.1"
+  }
+}
